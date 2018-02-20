@@ -7,6 +7,7 @@ alias: TOC
 	-- [Organization Into Groups]
 	--- [Moving Groups and/or Logins]
 	-- [Logins]
+	--- [Saving Edits/Changes]
 	-- [Preferences]
 	--- [General Preferences]
 	--- [Database Default Preferences]
@@ -38,6 +39,7 @@ alias: Overview
  - [Organization Into Groups]
  -- [Moving Groups and/or Logins]
  - [Logins]
+ -- [Saving Edits/Changes]
  - [Preferences]
  -- [General Preferences]
  -- [Database Default Preferences]
@@ -260,6 +262,23 @@ password length should be an even number.
 The default password policy for the current database can be set using
 the ''Password Policy'' dialog from the ''Security'' menu.
 
+-------------------
+title: Saving Edits/Changes
+
+The password editing window shown for both ''Add Login'' and ''Edit Login''
+operates upon a temporary copy of the data for a password record.  No
+changes are made to the master database as an immediate result of changes
+made to the fields in the editing window.  Only after the ''Ok'' button is
+pressed will the contents of the fields of the edit window be stored into
+the master database (overwriting existing data if the operation is an edit). 
+If an existing password entry is opened for editing, and it is desired to
+discard the changes made, pressing the ''Cancel'' button will discard the
+changes and leave the master database unchanged.
+
+Note that a side-effect of this operation of the editing window is that the
+''Auto-save'' feature will not activate until the ''Ok'' button is
+depressed.  This provides some small security against accidential changes to
+a password record being saved into the master database unintentionally.
 
 -------------------
 title: Preferences
@@ -273,6 +292,13 @@ when a database is open.
 -------------------
 title: General Preferences
 alias: General
+
+'''When double clicking a login'''
+  
+ | Configures what to do when you double-click on a login. The options are
+to copy the login's password to the clipboard, to open the login for
+editing, to open the login for viewing, to launch a browser directed to the
+URL stored in the login, or to do nothing.
 
 '''Clear clipboard after <nn> seconds'''
 
@@ -288,17 +314,27 @@ used database file names. If set to zero, Password Gorilla will not remember
 database file names at all. The current list of file names in the most
 recently used list can be cleared with the button next to this option.
 
-'''When double clicking a login'''
-  
- | Configures what to do when you double-click on a login. The options are
-to copy the login's password to the clipboard, to open the login for
-editing, or to do neither.
-
 '''Backup database on save'''
 
- | If enabled, then a backup file of the password database is made whenever
-the database is saved. The backup file is located in the same directory and
-has the same name as the database itself, but with the ''.bak'' extension.
+ | If enabled, then a backup copy of the password database is made whenever
+the database is saved. The backup copy is located in the same directory
+(unless a path is set in the ''Backup path:'' entry described below) and
+has the same name as the database itself, but with the ''.bak'' extension
+(unless the ''Time stamp backup'' option below is enabled).
+
+'''Time stamp backup'''
+
+ | If enabled, and if the above ''Backup database on save'' option is also
+enabled, then the saved backup file will have an ISO-8601 style timestamp
+inserted into the filename instead of simply being named with a ''.bak''
+extension.
+
+'''Backup path:'''
+
+ | If a directory is configured in this entry, then backup files created by
+the ''Backup database on save'' option will be stored in the directory set
+here instead of in the directory where the opened PasswordSafe file is
+located.
 
 '''Remember sizes of dialog boxes'''
 
@@ -351,7 +387,7 @@ discussion of [Database Preferences] below.
 title: Export Preferences
 
 Export preferences apply to the exporting of a password database to a
-plain-text file.
+plain-text (CSV) file.
 
 '''Include password field'''
 
@@ -421,16 +457,6 @@ both Password Gorilla and Password Safe, the latter will not read accented
 characters correctly. (The database will open, but non-ASCII characters will
 not show up correctly.) This option has no effect if your database uses only
 ASCII characters.
-
-'''Timestamp Backup'''
-
- | If the option ''Auto-Save'' is enabled then the copy can be saved with
-a timestamp in the chosen backup directory. The timestamp format is: YYYY-mm-dd-hh-mm-ss
-
-'''Backup Path'''
-
- | If no backup path is entered then the backup copy has the suffix ".bak" and is
-put into the same directory as the Password database itself.
 
 '''V3 key stretching iterations'''
 
@@ -703,14 +729,18 @@ stands for Control, S- stands for Shift, and M- stands for Meta):
  | C-d		Delete character to right of cursor
  | C-k		Delete all characters to right of cursor
 
-For the notes box only:
+'''For the notes box only:'''
 
- | M-Backspace 	Delete word to left of cursor
+ | M-Backspace		Delete word to left of cursor
  | M-Delete 		Delete word to left of cursor
  | M-d 		Delete word to right of cursor
  | M-w		Copy selection to clipboard
  | C-w 		Cuts selection to clipboard
  | C-y		Inserts clipboard at cursor position
+
+'''For the master password entry box:'''
+
+ | C-Backspace		Delete all text
 
 -------------------
 title: The "V3" Database Format
